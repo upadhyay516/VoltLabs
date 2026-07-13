@@ -451,7 +451,7 @@ body {
 }
 
 .neon-text {
-  text-shadow: 0 0 6px var(--accent), 0 0 18px var(--accent);
+  text-shadow: 0 0 3px rgba(255, 255, 255, 0.15), 0 0 10px var(--accent);
 }
 
 ::selection {
