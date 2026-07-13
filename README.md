@@ -7,8 +7,9 @@
 Hand-assembled Arduino & non-Arduino electronics kits for school, college and university students — built and shipped by real people, not a factory line.
 
 [![Next.js](https://img.shields.io/badge/Next.js-14-black?logo=next.js)](https://nextjs.org/)
-[![Supabase](https://img.shields.io/badge/Supabase-Auth%20%2B%20DB-3ECF8E?logo=supabase&logoColor=white)](https://supabase.com/)
+[![Supabase](https://img.shields.io/badge/Supabase-Auth%20%2B%20DB%20%2B%20Storage-3ECF8E?logo=supabase&logoColor=white)](https://supabase.com/)
 [![Razorpay](https://img.shields.io/badge/Razorpay-Payments-0C2451?logo=razorpay&logoColor=white)](https://razorpay.com/)
+[![Resend](https://img.shields.io/badge/Resend-Transactional%20Email-000000?logo=resend&logoColor=white)](https://resend.com/)
 [![Deployed on Vercel](https://img.shields.io/badge/Deployed%20on-Vercel-black?logo=vercel)](https://vercel.com/)
 [![Instagram](https://img.shields.io/badge/Instagram-@voltlab.builds-E4405F?logo=instagram&logoColor=white)](https://www.instagram.com/voltlab.builds/)
 
@@ -32,9 +33,15 @@ This isn't a template. It's a working full-stack app: real authentication, a rea
 | 🛒 **Cart & Checkout** | Per-account cart (localStorage-backed), quantity controls, live subtotal |
 | 💳 **Razorpay Payments** | Server-verified signature checks — no fake "paid" orders possible |
 | 📦 **Order Tracking** | Customers see their order history and live status updates |
-| 🧑‍💻 **Staff Console** | Role-gated dashboard — add/edit/publish/delete products, update order status, revenue at a glance |
+| 📧 **Email Notifications** | Resend-powered order confirmations, owner "new order" alerts, and status-update emails |
+| 🧑‍💻 **Staff Console** | Role-gated dashboard — add/edit/publish/delete products (with direct image upload), update order status, revenue at a glance |
+| 🖼️ **Product Image Uploads** | Staff upload photos straight from their computer to Supabase Storage — no image URLs needed |
 | 🛡️ **Row Level Security** | Enforced at the *database* level — not just hidden UI. A tampered frontend still can't touch what it shouldn't |
-| 🎨 **11 Themes** | Y2K Neon, Midnight Violet, Paper Lab, Slate, Sage, Dusk, Solaris, Aurora, Blossom, Citrus, Obsidian — switchable per-account, saved to your profile |
+| 🎨 **24 Themes** | Y2K Neon, Midnight Violet, Obsidian, Cyberlime, Nightfall, Slate, Dusk, Ocean, Glacier, Steel, Aurora, Sage, Forest, Meadow, Terracotta, Rosewood, Solaris, Citrus, Coral, Paper Lab, Blossom, Ivory, Plum, Amethyst — switchable per-account, saved to your profile |
+| 📱 **Installable PWA** | Add-to-home-screen install prompt, offline-ready service worker, app icons for iOS/Android |
+| 🧭 **Scroll Progress + Custom Cursor** | Themed top-of-page scroll indicator and a glowing custom cursor that reacts to hoverable elements (desktop only, respects reduced-motion) |
+| 🔎 **SEO Ready** | Auto-generated sitemap, robots.txt, and per-page Open Graph images for products |
+| 📄 **Legal Pages** | Built-in Privacy Policy and Terms of Service pages |
 | 📱 **Mobile-First** | Hamburger nav, responsive grids, and touch-friendly controls that don't break on a phone |
 | 🖼️ **Glassmorphism + Parallax** | Frosted glass cards, pixel-grid backdrops, and a floating-chip parallax hero |
 
@@ -46,8 +53,9 @@ This isn't a template. It's a working full-stack app: real authentication, a rea
 |---|---|---|
 | Framework | **Next.js 14** (App Router) + TypeScript | Server components, API routes, one deploy target |
 | Styling | **Tailwind CSS** | Fast iteration on a fully custom design system |
-| Auth + DB | **Supabase** | Free tier, built-in Google OAuth, Postgres + RLS out of the box |
+| Auth + DB + Storage | **Supabase** | Free tier, built-in Google OAuth, Postgres + RLS, and object storage for product photos |
 | Payments | **Razorpay** | No setup/monthly fee, free unlimited test mode, built for Indian UPI/cards |
+| Transactional Email | **Resend** | Free up to 3,000 emails/month, works out of the box with zero domain setup |
 | Hosting | **Vercel** | Zero-config Next.js deploys, generous free tier |
 
 ---
@@ -81,6 +89,8 @@ This project is deployed on **Vercel**, connected directly to this GitHub repo �
    | `SUPABASE_SERVICE_ROLE_KEY` | Supabase → Settings → API (keep secret!) |
    | `NEXT_PUBLIC_RAZORPAY_KEY_ID` | Razorpay → Settings → API Keys |
    | `RAZORPAY_KEY_SECRET` | Razorpay → Settings → API Keys (keep secret!) |
+   | `RESEND_API_KEY` | Resend → API Keys (keep secret!) |
+   | `OWNER_NOTIFICATION_EMAIL` | Your inbox — where "new order" alerts get sent |
    | `NEXT_PUBLIC_SITE_URL` | Your Vercel URL, e.g. `https://voltlab-builds.vercel.app` |
 
 4. **Click Deploy** — build takes ~1–2 minutes.
@@ -89,7 +99,9 @@ This project is deployed on **Vercel**, connected directly to this GitHub repo �
    - Supabase → Authentication → URL Configuration
    - Set **Site URL** and add a **Redirect URL** for `https://<your-vercel-url>/auth/callback`
 
-6. **Push updates any time**:
+6. **Create the `product-images` storage bucket** (needed for staff to upload product photos) — see [`docs/STORAGE_SETUP.md`](docs/STORAGE_SETUP.md).
+
+7. **Push updates any time**:
    ```bash
    git add .
    git commit -m "your change"
@@ -118,6 +130,8 @@ Open **http://localhost:3000**.
 |---|---|
 | [`docs/SUPABASE_SETUP.md`](docs/SUPABASE_SETUP.md) | Creating the project, running the schema, enabling Google login, promoting an account to staff |
 | [`docs/PAYMENT_SETUP.md`](docs/PAYMENT_SETUP.md) | Razorpay keys, test cards/UPI, how the signature-verification flow works |
+| [`docs/EMAIL_SETUP.md`](docs/EMAIL_SETUP.md) | Resend account setup, order confirmation / owner alert / status-update emails |
+| [`docs/STORAGE_SETUP.md`](docs/STORAGE_SETUP.md) | Creating the `product-images` Supabase Storage bucket and access policies |
 | [`docs/DEPLOYMENT.md`](docs/DEPLOYMENT.md) | Full Vercel *and* Netlify deployment walkthroughs, post-deploy checklist |
 
 ---
@@ -127,14 +141,22 @@ Open **http://localhost:3000**.
 ```
 app/                  Next.js App Router pages + API routes
   api/razorpay/       create-order & verify server routes (signature-checked)
+  api/orders/         staff order-status update route (sends status-update email)
   auth/callback/      Google OAuth redirect handler
-  products/           catalog + product detail pages
+  products/           catalog + product detail pages (+ per-product OG image)
   cart/ checkout/     shopping flow
   orders/             customer order history
   account/            username / password / theme settings
   staff/              staff-only dashboard, product & order management
-components/           Navbar, ProductCard, GlassCard, ParallaxHero, RazorpayButton…
-lib/                  Supabase clients, auth / cart / theme React contexts
+  legal/              privacy policy + terms of service pages
+  themes/             full theme gallery / picker page
+  robots.ts sitemap.ts opengraph-image.tsx   SEO + social preview generation
+components/           Navbar, ProductCard, GlassCard, ParallaxHero, RazorpayButton,
+                       ImageUploader, StockBadge, ScrollProgress, CustomCursor,
+                       InstallPrompt, ServiceWorkerRegister, LegalLayout…
+lib/                  Supabase clients, auth / cart / theme React contexts, themes.ts, email.ts
+middleware.ts         keeps the Supabase auth session cookie fresh on every request
+public/               manifest.json, service worker (sw.js), app icons
 supabase/schema.sql   full DB schema + RLS policies + seed products
 docs/                 setup guides referenced above
 ```
@@ -144,8 +166,10 @@ docs/                 setup guides referenced above
 ## 🔒 Security notes
 
 - Every table (`profiles`, `products`, `orders`, `order_items`) has **Row Level Security** enabled — customers can only read/write their own data, and only accounts with `role = 'staff'` can manage products or order statuses. This is enforced by Postgres itself, not the frontend.
-- The Razorpay **Key Secret** and Supabase **service role key** are only ever read inside server-side API routes (`app/api/**`) — never shipped to the browser.
+- `middleware.ts` refreshes the Supabase auth session cookie on every request so sessions don't silently expire mid-browse.
+- The Razorpay **Key Secret**, Supabase **service role key**, and **Resend API key** are only ever read inside server-side API routes (`app/api/**`) or server modules (`lib/email.ts`) — never shipped to the browser.
 - Payment confirmation re-computes Razorpay's HMAC signature server-side before an order is ever written to the database, so a tampered client request can't fake a "successful" payment.
+- The `product-images` Supabase Storage bucket is public-read (so product photos load without auth) but writes are staff-gated via storage policies — see [`docs/STORAGE_SETUP.md`](docs/STORAGE_SETUP.md).
 
 ---
 
