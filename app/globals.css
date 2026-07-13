@@ -1,0 +1,478 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@import url("https://fonts.googleapis.com/css2?family=Press+Start+2P&family=VT323&family=Space+Mono:wght@400;700&family=Fredoka:wght@500;700&display=swap");
+
+/* ---------------------------------------------------------------
+   Theme tokens. [data-theme] on <html> swaps the palette so staff
+   can flip between looks without touching component code.
+   Default = y2k (chrome/neon/pixel). Two alternates ship for the
+   account settings "change theme" control.
+------------------------------------------------------------------*/
+:root,
+[data-theme="y2k"] {
+  --bg: #0a0a12;
+  --panel: #12121f;
+  --glass: rgba(18, 18, 33, 0.55);
+  --border: rgba(0, 240, 255, 0.35);
+  --accent: #00f0ff;
+  --accent-2: #ff2ee6;
+  --accent-3: #7c3aed;
+  --text: #e8e8ff;
+  --text-dim: #8b8bb0;
+  --success: #39ff14;
+}
+
+[data-theme="midnight"] {
+  --bg: #060608;
+  --panel: #101014;
+  --glass: rgba(16, 16, 20, 0.6);
+  --border: rgba(124, 58, 237, 0.35);
+  --accent: #7c3aed;
+  --accent-2: #4f46e5;
+  --accent-3: #00f0ff;
+  --text: #eaeaf0;
+  --text-dim: #82829a;
+  --success: #39ff14;
+}
+
+[data-theme="paper"] {
+  --bg: #f4f1ea;
+  --panel: #ffffff;
+  --glass: rgba(255, 255, 255, 0.55);
+  --border: rgba(20, 20, 30, 0.15);
+  --accent: #12121f;
+  --accent-2: #7c3aed;
+  --accent-3: #00a9b8;
+  --text: #14141e;
+  --text-dim: #5c5c6e;
+  --success: #0a8a2c;
+}
+
+/* Slate — dark, low-contrast, minimal. Muted blue-gray instead of neon,
+   easy on the eyes for long browsing sessions. */
+[data-theme="slate"] {
+  --bg: #1a1d23;
+  --panel: #22262e;
+  --glass: rgba(34, 38, 46, 0.6);
+  --border: rgba(126, 166, 201, 0.25);
+  --accent: #7ea6c9;
+  --accent-2: #5fb8a3;
+  --accent-3: #9a8fc9;
+  --text: #d8dee5;
+  --text-dim: #7a8290;
+  --success: #5fb87c;
+}
+
+/* Sage — light, warm-neutral background with a calm green accent.
+   The "paper" theme's softer, more colorful sibling. */
+[data-theme="sage"] {
+  --bg: #f0f3ee;
+  --panel: #ffffff;
+  --glass: rgba(255, 255, 255, 0.6);
+  --border: rgba(107, 143, 113, 0.25);
+  --accent: #6b8f71;
+  --accent-2: #c98a5b;
+  --accent-3: #5c8ea3;
+  --text: #2b332c;
+  --text-dim: #6b7268;
+  --success: #4d8a5b;
+}
+
+/* Dusk — soft lavender-gray dark theme, gentler than Midnight Violet. */
+[data-theme="dusk"] {
+  --bg: #16151d;
+  --panel: #1e1d29;
+  --glass: rgba(30, 29, 41, 0.6);
+  --border: rgba(155, 143, 217, 0.22);
+  --accent: #9b8fd9;
+  --accent-2: #d99b9b;
+  --accent-3: #8fbfd9;
+  --text: #e4e1ef;
+  --text-dim: #8b869e;
+  --success: #7ec98f;
+}
+
+/* Solaris — warm amber/ember dark theme. High contrast without being harsh. */
+[data-theme="solaris"] {
+  --bg: #1c1712;
+  --panel: #241d16;
+  --glass: rgba(36, 29, 22, 0.6);
+  --border: rgba(242, 166, 90, 0.28);
+  --accent: #f2a65a;
+  --accent-2: #e85d4c;
+  --accent-3: #f2c94c;
+  --text: #f5e9da;
+  --text-dim: #a89583;
+  --success: #8bc98f;
+}
+
+/* Aurora — deep navy with teal/green glow, like the northern lights. */
+[data-theme="aurora"] {
+  --bg: #0d1b2a;
+  --panel: #142638;
+  --glass: rgba(20, 38, 56, 0.6);
+  --border: rgba(45, 212, 191, 0.28);
+  --accent: #2dd4bf;
+  --accent-2: #4ade80;
+  --accent-3: #60a5fa;
+  --text: #e0f2f1;
+  --text-dim: #7a94a3;
+  --success: #4ade80;
+}
+
+/* Blossom — light, warm rose/mauve. Soft and airy, easy on the eyes in daylight. */
+[data-theme="blossom"] {
+  --bg: #fdf2f5;
+  --panel: #ffffff;
+  --glass: rgba(255, 255, 255, 0.6);
+  --border: rgba(224, 100, 138, 0.25);
+  --accent: #e0648a;
+  --accent-2: #9b6b9e;
+  --accent-3: #d99b5f;
+  --text: #3a2530;
+  --text-dim: #8a6b76;
+  --success: #6fa876;
+}
+
+/* Citrus — light, energetic lime + orange. Cheerful without being loud. */
+[data-theme="citrus"] {
+  --bg: #fbfaf0;
+  --panel: #ffffff;
+  --glass: rgba(255, 255, 255, 0.6);
+  --border: rgba(124, 179, 66, 0.28);
+  --accent: #7cb342;
+  --accent-2: #ff9f45;
+  --accent-3: #4fb0a5;
+  --text: #2e3620;
+  --text-dim: #6b7660;
+  --success: #4d9a55;
+}
+
+/* Obsidian — near-black with electric blue/violet. Maximum contrast, minimal palette. */
+[data-theme="obsidian"] {
+  --bg: #08090c;
+  --panel: #101216;
+  --glass: rgba(16, 18, 22, 0.65);
+  --border: rgba(77, 127, 255, 0.3);
+  --accent: #4d7fff;
+  --accent-2: #a45bff;
+  --accent-3: #3fd1c7;
+  --text: #f0f2f5;
+  --text-dim: #7d8590;
+  --success: #4ade80;
+}
+
+/* Cyberlime — dark with electric lime and acid green, arcade-cabinet energy. */
+[data-theme="cyberlime"] {
+  --bg: #0c1210;
+  --panel: #141c19;
+  --glass: rgba(20, 28, 25, 0.62);
+  --border: rgba(163, 255, 18, 0.28);
+  --accent: #a3ff12;
+  --accent-2: #00ffa2;
+  --accent-3: #ffe45a;
+  --text: #e6ffe9;
+  --text-dim: #7a9083;
+  --success: #a3ff12;
+}
+
+/* Nightfall — indigo-black with periwinkle and pink glow. */
+[data-theme="nightfall"] {
+  --bg: #090912;
+  --panel: #12111d;
+  --glass: rgba(18, 17, 29, 0.62);
+  --border: rgba(108, 124, 255, 0.28);
+  --accent: #6c7cff;
+  --accent-2: #ff6ec7;
+  --accent-3: #4dd0e1;
+  --text: #e8e8f5;
+  --text-dim: #7a7a95;
+  --success: #4ade80;
+}
+
+/* Ocean — deep navy with a bright sky-blue current. */
+[data-theme="ocean"] {
+  --bg: #0a1929;
+  --panel: #123049;
+  --glass: rgba(18, 48, 73, 0.6);
+  --border: rgba(79, 195, 247, 0.28);
+  --accent: #4fc3f7;
+  --accent-2: #29b6f6;
+  --accent-3: #80deea;
+  --text: #e1f5fe;
+  --text-dim: #6b8ba3;
+  --success: #4ade80;
+}
+
+/* Glacier — light, icy blue. Crisp and clean like fresh snow. */
+[data-theme="glacier"] {
+  --bg: #f0f7fb;
+  --panel: #ffffff;
+  --glass: rgba(255, 255, 255, 0.62);
+  --border: rgba(47, 155, 218, 0.25);
+  --accent: #2f9bda;
+  --accent-2: #7ec8e3;
+  --accent-3: #5c8ea3;
+  --text: #1c3a4a;
+  --text-dim: #6f8c9b;
+  --success: #2f9b6d;
+}
+
+/* Steel — neutral cool gray with a crisp sky-blue accent. */
+[data-theme="steel"] {
+  --bg: #14181d;
+  --panel: #1c2128;
+  --glass: rgba(28, 33, 40, 0.6);
+  --border: rgba(88, 166, 255, 0.28);
+  --accent: #58a6ff;
+  --accent-2: #79c0ff;
+  --accent-3: #a5d6ff;
+  --text: #e6edf3;
+  --text-dim: #7d8590;
+  --success: #4ade80;
+}
+
+/* Forest — dark, deep green, like standing under a canopy at dusk. */
+[data-theme="forest"] {
+  --bg: #0f1b14;
+  --panel: #16261c;
+  --glass: rgba(22, 38, 28, 0.62);
+  --border: rgba(76, 175, 125, 0.28);
+  --accent: #4caf7d;
+  --accent-2: #8bc34a;
+  --accent-3: #cddc39;
+  --text: #e3f0e6;
+  --text-dim: #6f8a76;
+  --success: #8bc34a;
+}
+
+/* Meadow — light, fresh sage-green with a warm orange accent. */
+[data-theme="meadow"] {
+  --bg: #f4f8f0;
+  --panel: #ffffff;
+  --glass: rgba(255, 255, 255, 0.62);
+  --border: rgba(111, 174, 68, 0.25);
+  --accent: #6fae44;
+  --accent-2: #f2a154;
+  --accent-3: #4fb0a5;
+  --text: #2c3a20;
+  --text-dim: #6f7d61;
+  --success: #4d9a55;
+}
+
+/* Terracotta — warm clay tones on a light, sun-baked background. */
+[data-theme="terracotta"] {
+  --bg: #faf3ec;
+  --panel: #ffffff;
+  --glass: rgba(255, 255, 255, 0.62);
+  --border: rgba(193, 101, 47, 0.25);
+  --accent: #c1652f;
+  --accent-2: #e0925a;
+  --accent-3: #8a9a5b;
+  --text: #3a2a1e;
+  --text-dim: #8a7566;
+  --success: #6a8a4d;
+}
+
+/* Rosewood — warm dark maroon, rich and grounded. */
+[data-theme="rosewood"] {
+  --bg: #1a1112;
+  --panel: #241819;
+  --glass: rgba(36, 24, 25, 0.62);
+  --border: rgba(217, 119, 87, 0.28);
+  --accent: #d97757;
+  --accent-2: #e8a87c;
+  --accent-3: #c2447a;
+  --text: #f2e6e0;
+  --text-dim: #96827c;
+  --success: #8bc98f;
+}
+
+/* Coral — light peachy-coral, warm and inviting. */
+[data-theme="coral"] {
+  --bg: #fff5f0;
+  --panel: #ffffff;
+  --glass: rgba(255, 255, 255, 0.62);
+  --border: rgba(255, 122, 89, 0.25);
+  --accent: #ff7a59;
+  --accent-2: #ffab73;
+  --accent-3: #4fb0a5;
+  --text: #3d2b24;
+  --text-dim: #8a6f63;
+  --success: #4d9a55;
+}
+
+/* Ivory — near-white, understated, almost paperless in its restraint. */
+[data-theme="ivory"] {
+  --bg: #fbfaf7;
+  --panel: #ffffff;
+  --glass: rgba(255, 255, 255, 0.65);
+  --border: rgba(74, 74, 74, 0.15);
+  --accent: #4a4a4a;
+  --accent-2: #b08d57;
+  --accent-3: #6f8a9e;
+  --text: #2b2b2b;
+  --text-dim: #8a8a85;
+  --success: #4d8a5b;
+}
+
+/* Plum — dark plum and wine tones, elegant and moody. */
+[data-theme="plum"] {
+  --bg: #1c0f1a;
+  --panel: #261625;
+  --glass: rgba(38, 22, 37, 0.62);
+  --border: rgba(194, 68, 122, 0.28);
+  --accent: #c2447a;
+  --accent-2: #e88fb0;
+  --accent-3: #9b5de5;
+  --text: #f5e6ef;
+  --text-dim: #9b7d92;
+  --success: #7ec98f;
+}
+
+/* Amethyst — deep gemstone purple with a bright lilac glow. */
+[data-theme="amethyst"] {
+  --bg: #15101f;
+  --panel: #1e1730;
+  --glass: rgba(30, 23, 48, 0.62);
+  --border: rgba(155, 93, 229, 0.28);
+  --accent: #9b5de5;
+  --accent-2: #c77dff;
+  --accent-3: #5de5c7;
+  --text: #ede7f6;
+  --text-dim: #8a7fa3;
+  --success: #7ec98f;
+}
+
+html,
+body {
+  background: var(--bg);
+  color: var(--text);
+}
+
+body {
+  font-family: "Space Mono", monospace;
+}
+
+.font-display {
+  font-family: "Press Start 2P", monospace;
+}
+
+.font-terminal {
+  font-family: "VT323", monospace;
+}
+
+.font-bubble {
+  font-family: "Fredoka", sans-serif;
+  font-weight: 700;
+}
+
+/* Pixel grid backdrop used behind hero + section dividers */
+.pixel-grid {
+  background-image: linear-gradient(
+      var(--border) 1px,
+      transparent 1px
+    ),
+    linear-gradient(90deg, var(--border) 1px, transparent 1px);
+  background-size: 32px 32px;
+}
+
+/* Glassmorphism panel — the core visual language of the site */
+.glass {
+  background: var(--glass);
+  border: 1px solid var(--border);
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
+  border-radius: 4px;
+}
+
+.glass-elevated {
+  background: var(--glass);
+  border: 1px solid var(--border);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.35), 0 0 0 1px rgba(255, 255, 255, 0.02) inset;
+  border-radius: 4px;
+}
+
+/* Chunky pixel-bordered button, like a retro game menu item */
+.btn-pixel {
+  font-family: "Press Start 2P", monospace;
+  font-size: 0.65rem;
+  letter-spacing: 0.05em;
+  padding: 0.9rem 1.4rem;
+  color: var(--bg);
+  background: var(--accent);
+  border: 2px solid var(--text);
+  box-shadow: 3px 3px 0 var(--accent-2), 6px 6px 0 rgba(0, 0, 0, 0.4);
+  image-rendering: pixelated;
+  transition: transform 0.08s ease;
+}
+.btn-pixel:hover {
+  transform: translate(1px, 1px);
+  box-shadow: 2px 2px 0 var(--accent-2), 4px 4px 0 rgba(0, 0, 0, 0.4);
+}
+.btn-pixel:active {
+  transform: translate(3px, 3px);
+  box-shadow: 0 0 0 var(--accent-2);
+}
+
+.btn-pixel-outline {
+  font-family: "Press Start 2P", monospace;
+  font-size: 0.6rem;
+  letter-spacing: 0.05em;
+  padding: 0.8rem 1.2rem;
+  color: var(--accent);
+  background: transparent;
+  border: 2px solid var(--accent);
+  transition: all 0.15s ease;
+}
+.btn-pixel-outline:hover {
+  background: var(--accent);
+  color: var(--bg);
+}
+
+/* CRT scanline overlay, signature element of the boot-up moment */
+.crt-overlay {
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: 40;
+  background: repeating-linear-gradient(
+    to bottom,
+    rgba(255, 255, 255, 0.02) 0px,
+    rgba(255, 255, 255, 0.02) 1px,
+    transparent 1px,
+    transparent 3px
+  );
+  mix-blend-mode: overlay;
+}
+
+.neon-text {
+  text-shadow: 0 0 6px var(--accent), 0 0 18px var(--accent);
+}
+
+::selection {
+  background: var(--accent-2);
+  color: var(--bg);
+}
+
+/* Scrollbar, kept minimal, on-brand */
+::-webkit-scrollbar {
+  width: 10px;
+}
+::-webkit-scrollbar-track {
+  background: var(--bg);
+}
+::-webkit-scrollbar-thumb {
+  background: var(--accent);
+  border-radius: 0;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .animate-flicker {
+    animation: none !important;
+  }
+}
