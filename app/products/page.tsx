@@ -1,6 +1,7 @@
 import { supabase } from "@/lib/supabaseClient";
 import ProductCard from "@/components/ProductCard";
 import RevealOnScroll from "@/components/RevealOnScroll";
+import FloatingGeometries from "@/components/FloatingGeometries";
 import type { Metadata } from "next";
 
 export const revalidate = 0;
@@ -59,16 +60,17 @@ export default async function ProductsPage({
   ];
 
   return (
-    <div className="max-w-6xl mx-auto px-4 py-12">
-      <h1 className="font-display text-lg text-[var(--accent)] mb-2">
+    <div className="relative max-w-6xl mx-auto px-4 py-12 overflow-hidden">
+      <FloatingGeometries count={2} className="opacity-60" />
+      <h1 className="relative font-display text-lg text-[var(--accent)] mb-2">
         &gt; PRODUCT_CATALOG
       </h1>
-      <p className="font-terminal text-xl text-[var(--text-dim)] mb-8">
+      <p className="relative font-terminal text-xl text-[var(--text-dim)] mb-8">
         Every kit is hand-built and tested before it ships.
       </p>
 
       {/* Plain GET form — no JS needed, works even if hydration is slow */}
-      <form className="flex flex-col sm:flex-row gap-3 mb-6" action="/products">
+      <form className="relative flex flex-col sm:flex-row gap-3 mb-6" action="/products">
         {category && <input type="hidden" name="category" value={category} />}
         <input
           type="text"
@@ -95,7 +97,7 @@ export default async function ProductsPage({
         </button>
       </form>
 
-      <div className="flex items-center justify-between mb-10 flex-wrap gap-3">
+      <div className="relative flex items-center justify-between mb-10 flex-wrap gap-3">
         <div className="flex gap-3 flex-wrap">
           {categories.map((c) => {
             const params = new URLSearchParams();
@@ -125,7 +127,7 @@ export default async function ProductsPage({
         )}
       </div>
 
-      <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
+      <div className="relative grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
         {products?.map((p, i) => (
           <RevealOnScroll key={p.id} delay={(i % 6) * 80}>
             <ProductCard product={p as any} />

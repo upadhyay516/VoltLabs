@@ -1,6 +1,7 @@
 import ParallaxHero from "@/components/ParallaxHero";
 import GlassCard from "@/components/GlassCard";
 import RevealOnScroll from "@/components/RevealOnScroll";
+import FloatingGeometries from "@/components/FloatingGeometries";
 import Link from "next/link";
 import { supabase } from "@/lib/supabaseClient";
 import ProductCard from "@/components/ProductCard";
@@ -19,11 +20,12 @@ export default async function HomePage() {
     <div>
       <ParallaxHero />
 
-      <section className="max-w-6xl mx-auto px-4 py-16">
-        <h2 className="font-display text-lg mb-8 text-[var(--accent)]">
+      <section className="relative max-w-6xl mx-auto px-4 py-16 overflow-hidden">
+        <FloatingGeometries count={3} />
+        <h2 className="relative font-display text-lg mb-8 text-[var(--accent)]">
           &gt; HOW_IT_WORKS
         </h2>
-        <div className="grid md:grid-cols-2 gap-6">
+        <div className="relative grid md:grid-cols-2 gap-6">
           {[
             {
               title: "Pick a build",
@@ -49,8 +51,9 @@ export default async function HomePage() {
         </div>
       </section>
 
-      <section className="max-w-6xl mx-auto px-4 py-16">
-        <div className="flex items-center justify-between mb-8">
+      <section className="relative max-w-6xl mx-auto px-4 py-16 overflow-hidden">
+        <FloatingGeometries count={3} className="opacity-70" />
+        <div className="relative flex items-center justify-between mb-8">
           <h2 className="font-display text-lg text-[var(--accent)]">
             &gt; LATEST_BUILDS
           </h2>
@@ -58,7 +61,7 @@ export default async function HomePage() {
             View all →
           </Link>
         </div>
-        <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-6">
+        <div className="relative grid sm:grid-cols-2 lg:grid-cols-4 gap-6">
           {products?.map((p, i) => (
             <RevealOnScroll key={p.id} delay={i * 100}>
               <ProductCard product={p as any} />

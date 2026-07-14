@@ -7,8 +7,7 @@ import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import ServiceWorkerRegister from "@/components/ServiceWorkerRegister";
 import InstallPrompt from "@/components/InstallPrompt";
-import ScrollProgress from "@/components/ScrollProgress";
-import CustomCursor from "@/components/CustomCursor";
+import ScrollProgressBar from "@/components/ScrollProgressBar";
 import { Toaster } from "react-hot-toast";
 
 const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || "http://localhost:3000";
@@ -72,8 +71,7 @@ export default function RootLayout({
           <ThemeProvider>
             <CartProvider>
               <div className="crt-overlay" />
-              <ScrollProgress />
-              <CustomCursor />
+              <ScrollProgressBar />
               <ServiceWorkerRegister />
               <InstallPrompt />
               <Navbar />
