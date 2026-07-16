@@ -26,7 +26,9 @@ export type ThemeName =
   | "blossom"
   | "ivory"
   | "plum"
-  | "amethyst";
+  | "amethyst"
+  | "icloud"
+  | "icloud-dark";
 
 export type ThemeCategory =
   | "Retro & Neon"
@@ -34,7 +36,8 @@ export type ThemeCategory =
   | "Nature & Earth"
   | "Warm & Cozy"
   | "Light & Minimal"
-  | "Rich & Elegant";
+  | "Rich & Elegant"
+  | "Apple-Inspired";
 
 export interface ThemeDef {
   value: ThemeName;
@@ -249,6 +252,24 @@ export const THEMES: ThemeDef[] = [
     description: "Deep gemstone purple with a bright lilac glow.",
     colors: { bg: "#15101f", panel: "#1e1730", accent: "#9b5de5", accent2: "#c77dff" },
   },
+
+  // ---- Apple-Inspired ----
+  {
+    value: "icloud",
+    label: "iCloud",
+    shortLabel: "iCL",
+    category: "Apple-Inspired",
+    description: "Soft white, rounded cards, system font, no pixel/neon — a completely different look.",
+    colors: { bg: "#f5f5f7", panel: "#ffffff", accent: "#0071e3", accent2: "#5e5ce6" },
+  },
+  {
+    value: "icloud-dark",
+    label: "iCloud Dark",
+    shortLabel: "iCD",
+    category: "Apple-Inspired",
+    description: "Same soft, rounded, system-font look as iCloud — in Apple's dark mode palette.",
+    colors: { bg: "#000000", panel: "#1c1c1e", accent: "#0a84ff", accent2: "#5e5ce6" },
+  },
 ];
 
 export const THEME_CATEGORIES: ThemeCategory[] = [
@@ -258,6 +279,7 @@ export const THEME_CATEGORIES: ThemeCategory[] = [
   "Warm & Cozy",
   "Light & Minimal",
   "Rich & Elegant",
+  "Apple-Inspired",
 ];
 
 export function getTheme(value: ThemeName): ThemeDef {

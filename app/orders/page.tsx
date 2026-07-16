@@ -10,6 +10,9 @@ type OrderRow = {
   id: string;
   status: string;
   total: number;
+  delivery_charge: number;
+  report_fee: number;
+  project_report: boolean;
   created_at: string;
   order_items: { product_name: string; quantity: number; unit_price: number }[];
 };
@@ -31,7 +34,7 @@ export default function OrdersPage() {
     if (!user) return;
     supabase
       .from("orders")
-      .select("id, status, total, created_at, order_items(product_name, quantity, unit_price)")
+      .select("id, status, total, delivery_charge, report_fee, project_report, created_at, order_items(product_name, quantity, unit_price)")
       .eq("user_id", user.id)
       .order("created_at", { ascending: false })
       .then(({ data }) => setOrders((data as any) ?? []));
@@ -73,6 +76,12 @@ export default function OrdersPage() {
                     {it.product_name} × {it.quantity} — ₹{it.unit_price}
                   </li>
                 ))}
+                {o.delivery_charge > 0 && (
+                  <li>Delivery — ₹{o.delivery_charge}</li>
+                )}
+                {o.project_report && (
+                  <li>Project Report — ₹{o.report_fee}</li>
+                )}
               </ul>
             </GlassCard>
           ))}

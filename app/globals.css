@@ -346,6 +346,147 @@
   --success: #7ec98f;
 }
 
+/* iCloud — soft white, rounded, system-font. Unlike every other theme,
+   this one also overrides *structure* (fonts, borders, shadows), not just
+   colors, since a genuine Apple feel needs more than a recolor. */
+[data-theme="icloud"] {
+  --bg: #f5f5f7;
+  --panel: #ffffff;
+  --glass: rgba(255, 255, 255, 0.72);
+  --border: rgba(0, 0, 0, 0.08);
+  --accent: #0071e3;
+  --accent-2: #5e5ce6;
+  --accent-3: #34c759;
+  --text: #1d1d1f;
+  --text-dim: #86868b;
+  --success: #34c759;
+}
+
+/* iCloud Dark — Apple's dark mode palette with the same structural rules */
+[data-theme="icloud-dark"] {
+  --bg: #000000;
+  --panel: #1c1c1e;
+  --glass: rgba(28, 28, 30, 0.72);
+  --border: rgba(255, 255, 255, 0.12);
+  --accent: #0a84ff;
+  --accent-2: #5e5ce6;
+  --accent-3: #30d158;
+  --text: #f5f5f7;
+  --text-dim: #98989d;
+  --success: #30d158;
+}
+
+[data-theme="icloud"] body,
+[data-theme="icloud"] .font-terminal,
+[data-theme="icloud"] .font-data,
+[data-theme="icloud"] .font-display,
+[data-theme="icloud"] .font-bubble,
+[data-theme="icloud-dark"] body,
+[data-theme="icloud-dark"] .font-terminal,
+[data-theme="icloud-dark"] .font-data,
+[data-theme="icloud-dark"] .font-display,
+[data-theme="icloud-dark"] .font-bubble {
+  font-family: -apple-system, BlinkMacSystemFont, "SF Pro Display", "Segoe UI",
+    Helvetica, Arial, sans-serif !important;
+  letter-spacing: normal !important;
+  text-transform: none;
+}
+
+[data-theme="icloud"] .font-terminal,
+[data-theme="icloud"] .font-data,
+[data-theme="icloud-dark"] .font-terminal,
+[data-theme="icloud-dark"] .font-data {
+  font-weight: 400;
+}
+
+[data-theme="icloud"] .font-bubble,
+[data-theme="icloud"] .font-display,
+[data-theme="icloud-dark"] .font-bubble,
+[data-theme="icloud-dark"] .font-display {
+  font-weight: 600;
+}
+
+/* No scanline texture; pixel-grid stays as an element (it's also used as
+   an image-container background in ProductCard/ImageUploader/etc — hiding
+   the element would hide real product photos too), just strip its pattern */
+[data-theme="icloud"] .crt-overlay,
+[data-theme="icloud-dark"] .crt-overlay {
+  display: none !important;
+}
+[data-theme="icloud"] .pixel-grid,
+[data-theme="icloud-dark"] .pixel-grid {
+  background-image: none !important;
+}
+
+/* Cards: large rounded corners, soft drop shadow instead of a border.
+   On dark, shadows barely read against black, so lean on the border more. */
+[data-theme="icloud"] .glass,
+[data-theme="icloud"] .glass-elevated {
+  border-radius: 20px;
+  border: 1px solid var(--border);
+  box-shadow: 0 8px 30px rgba(0, 0, 0, 0.08);
+  backdrop-filter: blur(20px);
+}
+[data-theme="icloud-dark"] .glass,
+[data-theme="icloud-dark"] .glass-elevated {
+  border-radius: 20px;
+  border: 1px solid var(--border);
+  box-shadow: 0 8px 30px rgba(0, 0, 0, 0.4);
+  backdrop-filter: blur(20px);
+}
+
+/* Buttons: pill-shaped, no chunky pixel offset-shadow */
+[data-theme="icloud"] .btn-pixel,
+[data-theme="icloud-dark"] .btn-pixel {
+  font-family: -apple-system, BlinkMacSystemFont, "SF Pro Display", sans-serif !important;
+  font-size: 0.95rem;
+  font-weight: 600;
+  border-radius: 980px;
+  border: none;
+  box-shadow: 0 2px 8px rgba(0, 113, 227, 0.35);
+  letter-spacing: normal;
+  text-transform: none;
+}
+[data-theme="icloud"] .btn-pixel:hover,
+[data-theme="icloud-dark"] .btn-pixel:hover {
+  transform: none;
+  opacity: 0.88;
+  box-shadow: 0 2px 8px rgba(0, 113, 227, 0.35);
+}
+[data-theme="icloud"] .btn-pixel:active,
+[data-theme="icloud-dark"] .btn-pixel:active {
+  transform: none;
+  box-shadow: 0 1px 4px rgba(0, 113, 227, 0.3);
+}
+
+[data-theme="icloud"] .btn-pixel-outline,
+[data-theme="icloud-dark"] .btn-pixel-outline {
+  font-family: -apple-system, BlinkMacSystemFont, "SF Pro Display", sans-serif !important;
+  font-size: 0.95rem;
+  font-weight: 600;
+  border-radius: 980px;
+  border: 1px solid var(--border);
+  letter-spacing: normal;
+  text-transform: none;
+}
+[data-theme="icloud"] .btn-pixel-outline:hover,
+[data-theme="icloud-dark"] .btn-pixel-outline:hover {
+  background: rgba(0, 113, 227, 0.08);
+  color: var(--accent);
+}
+
+/* No neon glow — flat, legible text */
+[data-theme="icloud"] .neon-text,
+[data-theme="icloud-dark"] .neon-text {
+  text-shadow: none;
+}
+
+/* Rounded scrollbar to match */
+[data-theme="icloud"] ::-webkit-scrollbar-thumb,
+[data-theme="icloud-dark"] ::-webkit-scrollbar-thumb {
+  border-radius: 10px;
+}
+
 html,
 body {
   background: var(--bg);

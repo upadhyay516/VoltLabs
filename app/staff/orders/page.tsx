@@ -10,6 +10,9 @@ type OrderRow = {
   id: string;
   status: string;
   total: number;
+  delivery_charge: number;
+  report_fee: number;
+  project_report: boolean;
   shipping_name: string;
   shipping_address: string;
   shipping_phone: string;
@@ -85,9 +88,24 @@ export default function StaffOrdersPage() {
                   ₹{o.total}
                 </p>
               </div>
-              <p className="font-data text-sm text-[var(--text-dim)] mb-3">
+              <p className="font-data text-sm text-[var(--text-dim)] mb-2">
                 {o.shipping_address} · {o.shipping_phone}
               </p>
+              <div className="flex flex-wrap gap-2 mb-3">
+                {o.delivery_charge > 0 && (
+                  <span className="font-data text-xs px-2 py-1 border" style={{ borderColor: "var(--border)", color: "var(--text-dim)" }}>
+                    Delivery ₹{o.delivery_charge}
+                  </span>
+                )}
+                {o.project_report && (
+                  <span
+                    className="font-data text-xs px-2 py-1 border"
+                    style={{ borderColor: "var(--accent-2)", color: "var(--accent-2)" }}
+                  >
+                    📄 Project Report requested — ₹{o.report_fee}
+                  </span>
+                )}
+              </div>
               <div className="flex items-center justify-between flex-wrap gap-3">
                 <select
                   value={o.status}

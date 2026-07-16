@@ -11,7 +11,7 @@ create table if not exists public.profiles (
   full_name text,
   avatar_url text,
   role text not null default 'customer' check (role in ('customer', 'staff')),
-  theme text not null default 'y2k' check (theme in ('y2k', 'midnight', 'obsidian', 'cyberlime', 'nightfall', 'slate', 'dusk', 'ocean', 'glacier', 'steel', 'aurora', 'sage', 'forest', 'meadow', 'terracotta', 'rosewood', 'solaris', 'citrus', 'coral', 'paper', 'blossom', 'ivory', 'plum', 'amethyst')),
+  theme text not null default 'y2k' check (theme in ('y2k', 'midnight', 'obsidian', 'cyberlime', 'nightfall', 'slate', 'dusk', 'ocean', 'glacier', 'steel', 'aurora', 'sage', 'forest', 'meadow', 'terracotta', 'rosewood', 'solaris', 'citrus', 'coral', 'paper', 'blossom', 'ivory', 'plum', 'amethyst', 'icloud', 'icloud-dark')),
   created_at timestamptz default now()
 );
 
@@ -94,6 +94,9 @@ create table if not exists public.orders (
   status text not null default 'pending'
     check (status in ('pending', 'paid', 'processing', 'shipped', 'completed', 'cancelled')),
   total numeric(10,2) not null,
+  delivery_charge numeric(10,2) not null default 0,
+  report_fee numeric(10,2) not null default 0,
+  project_report boolean not null default false,
   shipping_name text,
   shipping_address text,
   shipping_phone text,

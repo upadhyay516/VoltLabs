@@ -7,7 +7,7 @@ import { useCart } from "@/lib/cart-context";
 import ProtectedRoute from "@/components/ProtectedRoute";
 
 export default function CheckoutPage() {
-  const { items, subtotal } = useCart();
+  const { items, subtotal, deliveryCharge, reportFee, projectReport, total } = useCart();
   const [name, setName] = useState("");
   const [address, setAddress] = useState("");
   const [phone, setPhone] = useState("");
@@ -73,10 +73,26 @@ export default function CheckoutPage() {
                 <span>₹{(i.price * i.quantity).toFixed(2)}</span>
               </li>
             ))}
+            {projectReport && (
+              <li className="flex justify-between text-[var(--accent-2)]">
+                <span>Project Report</span>
+                <span>₹{reportFee.toFixed(2)}</span>
+              </li>
+            )}
           </ul>
+          <div className="space-y-1 mb-4 font-data text-xs text-[var(--text-dim)] pt-3 border-t" style={{ borderColor: "var(--border)" }}>
+            <div className="flex justify-between">
+              <span>Subtotal</span>
+              <span>₹{subtotal.toFixed(2)}</span>
+            </div>
+            <div className="flex justify-between">
+              <span>Delivery</span>
+              <span>{deliveryCharge > 0 ? `₹${deliveryCharge.toFixed(2)}` : "FREE"}</span>
+            </div>
+          </div>
           <div className="flex justify-between font-terminal text-2xl mb-6 pt-4 border-t" style={{ borderColor: "var(--border)" }}>
             <span>Total</span>
-            <span className="text-[var(--accent-2)]">₹{subtotal.toFixed(2)}</span>
+            <span className="text-[var(--accent-2)]">₹{total.toFixed(2)}</span>
           </div>
           <RazorpayButton
             shippingName={name}

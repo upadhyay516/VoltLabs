@@ -52,11 +52,32 @@ function itemsTable(items: OrderItem[]) {
   return `<table style="width:100%;border-collapse:collapse;margin:16px 0;">${rows}</table>`;
 }
 
+function extraChargesRows(deliveryCharge: number, reportFee: number) {
+  let rows = "";
+  if (deliveryCharge > 0) {
+    rows += `
+    <tr>
+      <td style="padding:8px 0;border-bottom:1px solid #2a2a3d;color:#8b8bb0;">Delivery</td>
+      <td style="padding:8px 0;border-bottom:1px solid #2a2a3d;color:#8b8bb0;text-align:right;">₹${deliveryCharge.toFixed(2)}</td>
+    </tr>`;
+  }
+  if (reportFee > 0) {
+    rows += `
+    <tr>
+      <td style="padding:8px 0;border-bottom:1px solid #2a2a3d;color:#8b8bb0;">Project Report</td>
+      <td style="padding:8px 0;border-bottom:1px solid #2a2a3d;color:#8b8bb0;text-align:right;">₹${reportFee.toFixed(2)}</td>
+    </tr>`;
+  }
+  return rows;
+}
+
 export async function sendOrderConfirmation(opts: {
   to: string;
   orderId: string;
   items: OrderItem[];
   total: number;
+  deliveryCharge?: number;
+  reportFee?: number;
   shippingName: string;
   shippingAddress: string;
 }) {
@@ -65,7 +86,10 @@ export async function sendOrderConfirmation(opts: {
     `
     <p style="color:#c0c0d8;">Hey ${opts.shippingName}, thanks for your order — we're getting it assembled.</p>
     <p style="color:#8b8bb0;font-size:13px;">Order #${opts.orderId.slice(0, 8)}</p>
-    ${itemsTable(opts.items)}
+    <table style="width:100%;border-collapse:collapse;margin:16px 0;">
+      ${itemsTable(opts.items).replace(/<\/?table[^>]*>/g, "")}
+      ${extraChargesRows(opts.deliveryCharge ?? 0, opts.reportFee ?? 0)}
+    </table>
     <p style="text-align:right;font-size:18px;color:#ff2ee6;font-weight:bold;">Total: ₹${opts.total.toFixed(2)}</p>
     <p style="color:#c0c0d8;margin-top:20px;">Shipping to:<br/>${opts.shippingAddress}</p>
     <p style="color:#8b8bb0;font-size:13px;margin-top:20px;">You can track this order's status anytime from your Orders page on the site.</p>
@@ -88,6 +112,8 @@ export async function sendOwnerNewOrderAlert(opts: {
   orderId: string;
   items: OrderItem[];
   total: number;
+  deliveryCharge?: number;
+  reportFee?: number;
   shippingName: string;
   shippingAddress: string;
   shippingPhone: string;
@@ -99,7 +125,10 @@ export async function sendOwnerNewOrderAlert(opts: {
     "🔔 New order received",
     `
     <p style="color:#c0c0d8;">Order #${opts.orderId.slice(0, 8)} just came in.</p>
-    ${itemsTable(opts.items)}
+    <table style="width:100%;border-collapse:collapse;margin:16px 0;">
+      ${itemsTable(opts.items).replace(/<\/?table[^>]*>/g, "")}
+      ${extraChargesRows(opts.deliveryCharge ?? 0, opts.reportFee ?? 0)}
+    </table>
     <p style="text-align:right;font-size:18px;color:#ff2ee6;font-weight:bold;">Total: ₹${opts.total.toFixed(2)}</p>
     <p style="color:#c0c0d8;margin-top:20px;">
       Ship to: <strong>${opts.shippingName}</strong><br/>

@@ -1,11 +1,26 @@
 "use client";
 
 import Link from "next/link";
-import { useCart } from "@/lib/cart-context";
+import {
+  useCart,
+  FREE_DELIVERY_THRESHOLD,
+  DELIVERY_CHARGE,
+  PROJECT_REPORT_FEE,
+} from "@/lib/cart-context";
 import GlassCard from "@/components/GlassCard";
 
 export default function CartPage() {
-  const { items, updateQuantity, removeItem, subtotal } = useCart();
+  const {
+    items,
+    updateQuantity,
+    removeItem,
+    subtotal,
+    projectReport,
+    setProjectReport,
+    deliveryCharge,
+    reportFee,
+    total,
+  } = useCart();
 
   if (items.length === 0) {
     return (
@@ -21,13 +36,15 @@ export default function CartPage() {
     );
   }
 
+  const amountToFreeDelivery = Math.max(0, FREE_DELIVERY_THRESHOLD - subtotal);
+
   return (
     <div className="max-w-4xl mx-auto px-4 py-12">
       <h1 className="font-display text-lg text-[var(--accent)] mb-8">
         &gt; YOUR_CART
       </h1>
 
-      <div className="space-y-4 mb-8">
+      <div className="space-y-4 mb-6">
         {items.map((item) => (
           <GlassCard key={item.id} className="flex flex-wrap items-center gap-3 sm:gap-4">
             <div className="w-14 h-14 sm:w-16 sm:h-16 bg-[var(--panel)] flex items-center justify-center shrink-0">
@@ -69,16 +86,70 @@ export default function CartPage() {
         ))}
       </div>
 
-      <GlassCard elevated className="flex items-center justify-between">
+      {/* Free delivery nudge */}
+      {deliveryCharge > 0 && (
+        <p className="font-data text-xs text-[var(--accent-2)] mb-6">
+          Add ₹{amountToFreeDelivery.toFixed(2)} more to get FREE delivery
+          (orders ₹{FREE_DELIVERY_THRESHOLD}+ ship free — otherwise a flat ₹
+          {DELIVERY_CHARGE} delivery charge applies)
+        </p>
+      )}
+
+      {/* Project report add-on — cart only */}
+      <GlassCard className="mb-6 flex items-center justify-between gap-4 flex-wrap">
         <div>
-          <p className="font-data text-sm text-[var(--text-dim)]">Subtotal</p>
-          <p className="font-terminal text-3xl text-[var(--accent)]">
-            ₹{subtotal.toFixed(2)}
+          <p className="font-terminal text-xl">📄 Add a Project Report</p>
+          <p className="font-data text-xs text-[var(--text-dim)]">
+            A written report explaining the circuit, components, and working
+            — handy for submitting alongside your kit for coursework.
           </p>
         </div>
-        <Link href="/checkout" className="btn-pixel">
-          Checkout
-        </Link>
+        <label className="flex items-center gap-2 cursor-pointer shrink-0">
+          <input
+            type="checkbox"
+            checked={projectReport}
+            onChange={(e) => setProjectReport(e.target.checked)}
+            className="w-5 h-5 accent-[var(--accent)]"
+          />
+          <span className="font-terminal text-lg text-[var(--accent-2)]">
+            +₹{PROJECT_REPORT_FEE}
+          </span>
+        </label>
+      </GlassCard>
+
+      <GlassCard elevated>
+        <div className="space-y-2 mb-4 font-data text-sm">
+          <div className="flex justify-between text-[var(--text-dim)]">
+            <span>Subtotal</span>
+            <span>₹{subtotal.toFixed(2)}</span>
+          </div>
+          <div className="flex justify-between text-[var(--text-dim)]">
+            <span>Delivery</span>
+            <span>
+              {deliveryCharge > 0 ? `₹${deliveryCharge.toFixed(2)}` : "FREE"}
+            </span>
+          </div>
+          {reportFee > 0 && (
+            <div className="flex justify-between text-[var(--text-dim)]">
+              <span>Project Report</span>
+              <span>₹{reportFee.toFixed(2)}</span>
+            </div>
+          )}
+        </div>
+        <div
+          className="flex items-center justify-between pt-4 border-t"
+          style={{ borderColor: "var(--border)" }}
+        >
+          <div>
+            <p className="font-data text-sm text-[var(--text-dim)]">Total</p>
+            <p className="font-terminal text-3xl text-[var(--accent)]">
+              ₹{total.toFixed(2)}
+            </p>
+          </div>
+          <Link href="/checkout" className="btn-pixel">
+            Checkout
+          </Link>
+        </div>
       </GlassCard>
     </div>
   );

@@ -17,6 +17,12 @@ export type CartItem = {
   quantity: number;
 };
 
+// Pricing rules, kept in one place so cart/checkout/payment/emails never
+// disagree with each other.
+export const FREE_DELIVERY_THRESHOLD = 699;
+export const DELIVERY_CHARGE = 30;
+export const PROJECT_REPORT_FEE = 99;
+
 type CartContextType = {
   items: CartItem[];
   addItem: (item: Omit<CartItem, "quantity">, qty?: number) => void;
@@ -25,6 +31,11 @@ type CartContextType = {
   clearCart: () => void;
   subtotal: number;
   count: number;
+  projectReport: boolean;
+  setProjectReport: (value: boolean) => void;
+  deliveryCharge: number;
+  reportFee: number;
+  total: number;
 };
 
 const CartContext = createContext<CartContextType | undefined>(undefined);
@@ -35,18 +46,26 @@ const CartContext = createContext<CartContextType | undefined>(undefined);
 function storageKeyFor(userId: string | null) {
   return userId ? `voltlab_cart_${userId}` : "voltlab_cart_guest";
 }
+function reportKeyFor(userId: string | null) {
+  return userId ? `voltlab_report_${userId}` : "voltlab_report_guest";
+}
 
 export function CartProvider({ children }: { children: ReactNode }) {
   const { user, loading: authLoading } = useAuth();
   const [items, setItems] = useState<CartItem[]>([]);
+  const [projectReport, setProjectReportState] = useState(false);
   const [activeKey, setActiveKey] = useState<string | null>(null);
+  const [activeReportKey, setActiveReportKey] = useState<string | null>(null);
 
   // Whenever the signed-in user changes (login, logout, switch account),
   // load whatever cart belongs to that key instead of keeping old items.
   useEffect(() => {
     if (authLoading) return;
     const key = storageKeyFor(user?.id ?? null);
+    const reportKey = reportKeyFor(user?.id ?? null);
     setActiveKey(key);
+    setActiveReportKey(reportKey);
+
     const raw = localStorage.getItem(key);
     if (raw) {
       try {
@@ -57,11 +76,19 @@ export function CartProvider({ children }: { children: ReactNode }) {
     } else {
       setItems([]);
     }
+
+    setProjectReportState(localStorage.getItem(reportKey) === "1");
   }, [user?.id, authLoading]);
 
   useEffect(() => {
     if (activeKey) localStorage.setItem(activeKey, JSON.stringify(items));
   }, [items, activeKey]);
+
+  useEffect(() => {
+    if (activeReportKey) {
+      localStorage.setItem(activeReportKey, projectReport ? "1" : "0");
+    }
+  }, [projectReport, activeReportKey]);
 
   function addItem(item: Omit<CartItem, "quantity">, qty = 1) {
     setItems((prev) => {
@@ -88,10 +115,21 @@ export function CartProvider({ children }: { children: ReactNode }) {
 
   function clearCart() {
     setItems([]);
+    setProjectReportState(false);
+  }
+
+  function setProjectReport(value: boolean) {
+    setProjectReportState(value);
   }
 
   const subtotal = items.reduce((sum, i) => sum + i.price * i.quantity, 0);
   const count = items.reduce((sum, i) => sum + i.quantity, 0);
+
+  // No delivery charge on an empty cart, and free above the threshold.
+  const deliveryCharge =
+    items.length === 0 || subtotal >= FREE_DELIVERY_THRESHOLD ? 0 : DELIVERY_CHARGE;
+  const reportFee = projectReport ? PROJECT_REPORT_FEE : 0;
+  const total = subtotal + deliveryCharge + reportFee;
 
   return (
     <CartContext.Provider
@@ -103,6 +141,11 @@ export function CartProvider({ children }: { children: ReactNode }) {
         clearCart,
         subtotal,
         count,
+        projectReport,
+        setProjectReport,
+        deliveryCharge,
+        reportFee,
+        total,
       }}
     >
       {children}

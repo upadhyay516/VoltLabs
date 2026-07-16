@@ -23,7 +23,7 @@ export default function RazorpayButton({
   shippingPhone: string;
 }) {
   const { user, profile } = useAuth();
-  const { items, subtotal, clearCart } = useCart();
+  const { items, total, deliveryCharge, reportFee, projectReport, clearCart } = useCart();
   const [loading, setLoading] = useState(false);
   const router = useRouter();
 
@@ -51,7 +51,7 @@ export default function RazorpayButton({
       const res = await fetch("/api/razorpay/create-order", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ amount: subtotal, items }),
+        body: JSON.stringify({ amount: total, items }),
       });
       const order = await res.json();
       if (!res.ok) throw new Error(order.error || "Could not create order");
@@ -81,7 +81,10 @@ export default function RazorpayButton({
               razorpay_signature: response.razorpay_signature,
               user_id: user.id,
               items,
-              total: subtotal,
+              total,
+              deliveryCharge,
+              reportFee,
+              projectReport,
               shippingName,
               shippingAddress,
               shippingPhone,
@@ -112,7 +115,7 @@ export default function RazorpayButton({
     <>
       <Script src="https://checkout.razorpay.com/v1/checkout.js" />
       <button onClick={handlePay} disabled={loading} className="btn-pixel w-full">
-        {loading ? "Processing…" : `Pay ₹${subtotal.toFixed(2)}`}
+        {loading ? "Processing…" : `Pay ₹${total.toFixed(2)}`}
       </button>
     </>
   );
